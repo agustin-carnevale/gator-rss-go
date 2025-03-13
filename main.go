@@ -39,6 +39,8 @@ func main() {
 
 	cmds.Register("users", commands.HandlerUsers)
 	cmds.Register("agg", commands.HandlerAggregator)
+	cmds.Register("addfeed", commands.HandlerAddFeed)
+	cmds.Register("feeds", commands.HandlerFeeds)
 
 	if len(os.Args) < 2 {
 		fmt.Println("Error: too few arguments")
