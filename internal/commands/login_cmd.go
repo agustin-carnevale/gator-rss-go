@@ -1,6 +1,7 @@
 package commands
 
 import (
+	"context"
 	"errors"
 	"fmt"
 
@@ -14,7 +15,12 @@ func HandlerLogin(s *config.State, cmd Command) error {
 
 	username := cmd.Args[0]
 
-	err := s.Config.SetUser(username)
+	user, err := s.DBQueries.GetUser(context.Background(), username)
+	if err != nil {
+		return err
+	}
+
+	err = s.Config.SetUser(user.Name)
 	if err != nil {
 		return err
 	}

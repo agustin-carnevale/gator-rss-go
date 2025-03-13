@@ -1,11 +1,14 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
 	"os"
 
 	"github.com/agustin-carnevale/gator-rss-go/internal/commands"
 	"github.com/agustin-carnevale/gator-rss-go/internal/config"
+	"github.com/agustin-carnevale/gator-rss-go/internal/database"
+	_ "github.com/lib/pq"
 )
 
 func main() {
@@ -14,14 +17,23 @@ func main() {
 		fmt.Println("Couldn't read config file.")
 	}
 
+	db, err := sql.Open("postgres", cfg.DBUrl)
+	if err != nil {
+		fmt.Println("Error connecting to DB")
+		os.Exit(1)
+	}
+	dbQueries := database.New(db)
+
 	state := config.State{
-		Config: &cfg,
+		Config:    &cfg,
+		DBQueries: dbQueries,
 	}
 	cmds := commands.Commands{
 		HandlersMap: make(map[string]func(*config.State, commands.Command) error),
 	}
 
 	cmds.Register("login", commands.HandlerLogin)
+	cmds.Register("register", commands.HandlerRegister)
 
 	if len(os.Args) < 2 {
 		fmt.Println("Error: too few arguments")

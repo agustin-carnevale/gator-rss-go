@@ -1,6 +1,7 @@
 package commands
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/agustin-carnevale/gator-rss-go/internal/config"
@@ -20,7 +21,10 @@ func (c *Commands) Register(name string, f func(*config.State, Command) error) {
 }
 
 func (c *Commands) Run(s *config.State, cmd Command) error {
-	handler := c.HandlersMap[cmd.Name]
+	handler, isDefined := c.HandlersMap[cmd.Name]
+	if !isDefined {
+		return errors.New("Error, invalid command: " + cmd.Name)
+	}
 	err := handler(s, cmd)
 	if err != nil {
 		fmt.Println("Error running command: " + cmd.Name)

@@ -4,10 +4,13 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+
+	"github.com/agustin-carnevale/gator-rss-go/internal/database"
 )
 
 type State struct {
-	Config *Config
+	Config    *Config
+	DBQueries *database.Queries
 }
 
 type Config struct {
