@@ -32,8 +32,13 @@ func main() {
 		HandlersMap: make(map[string]func(*config.State, commands.Command) error),
 	}
 
+	// Register all possible commands to run
 	cmds.Register("login", commands.HandlerLogin)
 	cmds.Register("register", commands.HandlerRegister)
+	cmds.Register("reset", commands.HandlerReset)
+
+	cmds.Register("users", commands.HandlerUsers)
+	cmds.Register("agg", commands.HandlerAggregator)
 
 	if len(os.Args) < 2 {
 		fmt.Println("Error: too few arguments")
