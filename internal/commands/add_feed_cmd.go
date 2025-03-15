@@ -33,6 +33,15 @@ func HandlerAddFeed(s *config.State, cmd Command) error {
 		return err
 	}
 
+	// Add feed to user's following
+	_, err = s.DBQueries.CreateFeedFollow(context.Background(), database.CreateFeedFollowParams{
+		UserID: user.ID,
+		FeedID: feed.ID,
+	})
+	if err != nil {
+		return err
+	}
+
 	fmt.Printf("%v\n", feed)
 	return nil
 }
