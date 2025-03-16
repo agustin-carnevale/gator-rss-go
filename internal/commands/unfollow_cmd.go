@@ -3,13 +3,12 @@ package commands
 import (
 	"context"
 	"errors"
-	"fmt"
 
 	"github.com/agustin-carnevale/gator-rss-go/internal/config"
 	"github.com/agustin-carnevale/gator-rss-go/internal/database"
 )
 
-func HandlerFollowFeed(s *config.State, cmd Command, user database.User) error {
+func HandlerUnfollow(s *config.State, cmd Command, user database.User) error {
 	if len(cmd.Args) < 1 {
 		return errors.New("error: not enough arguments")
 	}
@@ -23,14 +22,13 @@ func HandlerFollowFeed(s *config.State, cmd Command, user database.User) error {
 	}
 
 	// Create a Follow
-	follow, err := s.DBQueries.CreateFeedFollow(context.Background(), database.CreateFeedFollowParams{
+	err = s.DBQueries.DeleteFeedFollow(context.Background(), database.DeleteFeedFollowParams{
 		UserID: user.ID,
-		FeedID: feed.ID,
+		Url:    feed.Url,
 	})
 	if err != nil {
 		return err
 	}
 
-	fmt.Printf("User: '%s' started following Feed: '%s'\n", follow.UserName, follow.FeedName)
 	return nil
 }

@@ -5,15 +5,10 @@ import (
 	"fmt"
 
 	"github.com/agustin-carnevale/gator-rss-go/internal/config"
+	"github.com/agustin-carnevale/gator-rss-go/internal/database"
 )
 
-func HandlerFollowing(s *config.State, cmd Command) error {
-
-	// Get current user
-	user, err := s.DBQueries.GetUser(context.Background(), s.Config.CurrentUserName)
-	if err != nil {
-		return err
-	}
+func HandlerFollowing(s *config.State, cmd Command, user database.User) error {
 
 	// Get All feeds the current user is following
 	follows, err := s.DBQueries.GetFeedFollowsForUser(context.Background(), user.ID)
