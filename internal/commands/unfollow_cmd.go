@@ -2,7 +2,7 @@ package commands
 
 import (
 	"context"
-	"errors"
+	"fmt"
 
 	"github.com/agustin-carnevale/gator-rss-go/internal/config"
 	"github.com/agustin-carnevale/gator-rss-go/internal/database"
@@ -10,21 +10,15 @@ import (
 
 func HandlerUnfollow(s *config.State, cmd Command, user database.User) error {
 	if len(cmd.Args) < 1 {
-		return errors.New("error: not enough arguments")
+		return fmt.Errorf("usage: %s <feed_url>", cmd.Name)
 	}
 
 	feedUrl := cmd.Args[0]
 
-	// Get Feed
-	feed, err := s.DBQueries.GetFeedByUrl(context.Background(), feedUrl)
-	if err != nil {
-		return err
-	}
-
 	// Create a Follow
-	err = s.DBQueries.DeleteFeedFollow(context.Background(), database.DeleteFeedFollowParams{
+	err := s.DBQueries.DeleteFeedFollow(context.Background(), database.DeleteFeedFollowParams{
 		UserID: user.ID,
-		Url:    feed.Url,
+		Url:    feedUrl,
 	})
 	if err != nil {
 		return err

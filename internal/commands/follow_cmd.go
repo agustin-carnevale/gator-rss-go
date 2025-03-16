@@ -2,7 +2,6 @@ package commands
 
 import (
 	"context"
-	"errors"
 	"fmt"
 
 	"github.com/agustin-carnevale/gator-rss-go/internal/config"
@@ -11,7 +10,7 @@ import (
 
 func HandlerFollowFeed(s *config.State, cmd Command, user database.User) error {
 	if len(cmd.Args) < 1 {
-		return errors.New("error: not enough arguments")
+		return fmt.Errorf("usage: %s <feed_url>", cmd.Name)
 	}
 
 	feedUrl := cmd.Args[0]
