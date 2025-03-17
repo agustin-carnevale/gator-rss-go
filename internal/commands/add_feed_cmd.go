@@ -36,6 +36,7 @@ func HandlerAddFeed(s *config.State, cmd Command, user database.User) error {
 		return err
 	}
 
-	fmt.Printf("%v\n", feed)
+	// fmt.Printf("%v\n", feed)
+	fmt.Println("Feed added successfully: ", feed.Url)
 	return nil
 }

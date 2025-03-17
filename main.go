@@ -36,17 +36,16 @@ func main() {
 	cmds.Register("login", commands.HandlerLogin)
 	cmds.Register("register", commands.HandlerRegister)
 	cmds.Register("reset", commands.HandlerReset)
-
 	cmds.Register("users", commands.HandlerUsers)
+
 	cmds.Register("agg", commands.HandlerAggregator)
 	cmds.Register("addfeed", commands.MiddlewareLoggedIn(commands.HandlerAddFeed))
 	cmds.Register("feeds", commands.HandlerFeeds)
+	cmds.Register("browse", commands.MiddlewareLoggedIn(commands.HandlerBrowse))
 
 	cmds.Register("follow", commands.MiddlewareLoggedIn(commands.HandlerFollowFeed))
 	cmds.Register("following", commands.MiddlewareLoggedIn(commands.HandlerFollowing))
 	cmds.Register("unfollow", commands.MiddlewareLoggedIn(commands.HandlerUnfollow))
-
-
 
 	if len(os.Args) < 2 {
 		fmt.Println("Error: too few arguments")
